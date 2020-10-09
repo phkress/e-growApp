@@ -8,11 +8,11 @@ const Home = ({ navigation }) => {
   const lista =
     [
       {key:'1', name:'Iluminacao', titulo:'Iluminação',status:'Ativo', img: require('../../../assets/lampadas.png')},
-      {key:'2', name:'Temperatura', titulo:'Temperatura',status:'27 ºC', img:  require('../../../assets/lampadas.png')},
-      {key:'3', name:'Humidade', titulo:'Humidade',status:'75 %', img: require('../../../assets/lampadas.png')},
-      {key:'4', name:'Solo', titulo:'Solo',status:' 80', img: require('../../../assets/lampadas.png')},
-      {key:'5', name:'Porta', titulo:'Porta',status:'Aberta', img: require('../../../assets/lampadas.png')},
-      {key:'6', name:'Wifi', titulo:'Wi-fi',status:'Bom', img: require('../../../assets/lampadas.png')},
+      {key:'2', name:'Temperatura', titulo:'Temperatura',status:'27 ºC', img:  require('../../../assets/temperatura.png')},
+      {key:'3', name:'Humidade', titulo:'Humidade',status:'75 %', img: require('../../../assets/humidade.png')},
+      {key:'4', name:'Solo', titulo:'Solo',status:' 80', img: require('../../../assets/solo.png')},
+      {key:'5', name:'Porta', titulo:'Porta',status:'Aberta', img: require('../../../assets/door.png')},
+      {key:'6', name:'Wifi', titulo:'Wi-fi',status:'Bom', img: require('../../../assets/wifi.png')},
     ]
 
   const styles = StyleSheet.create({

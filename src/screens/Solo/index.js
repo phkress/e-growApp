@@ -5,14 +5,15 @@ import Marcador from '../../components/MarcadorComSlider'
 
 
 
-const Humidade = () => {
+const Solo = () => {
 
   const data = {
     atual:27,
     max:100,
     min:0,
     ideal:20,
-    tipo:''
+    tipo:'',
+    imagem:'solo'
   }
   
   return (
@@ -21,4 +22,4 @@ const Humidade = () => {
       />
     );  
 }
-export default Humidade;
+export default Solo;

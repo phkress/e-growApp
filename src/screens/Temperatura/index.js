@@ -11,7 +11,8 @@ const data = {
   max:100,
   min:0,
   ideal:20,
-  tipo:'ºC'
+  tipo:'ºC',
+  imagem:'temperatura'
 }
 
 return (

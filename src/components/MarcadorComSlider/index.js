@@ -44,14 +44,39 @@ const styles = StyleSheet.create({
 
 const {colors} = useTheme();
 const [item, setItem] = useState(props.data)
-const imagem = require('../../../assets/lampadas.png')
+const iluminacao = require('../../../assets/lampadas.png')
+const temperatura = require('../../../assets/temperatura.png')
+const humidade = require('../../../assets/humidade.png')
+const solo = require('../../../assets/solo.png')
+const porta = require('../../../assets/door.png')
+const wifi = require('../../../assets/wifi.png')
+
+
 
 const handlerSlideValue = (value) =>{
     setItem({...item, ideal : value})
 }
+
+const renderImage = () =>{
+  console.log(item)
+  switch (props.data.imagem) {
+    case 'iluminacao':
+        return <Image style={styles.img} source={iluminacao}/>
+    case 'temperatura':
+      return <Image style={styles.img} source={temperatura}/>  
+    case 'humidade':
+      return <Image style={styles.img} source={humidade}/>  
+    case 'solo':
+      return <Image style={styles.img} source={solo}/>  
+    case 'porta':
+      return <Image style={styles.img} source={porta}/>  
+    case 'wifi':
+      return <Image style={styles.img} source={wifi}/>  
+  }
+}
 return (
   <Surface style={styles.paper}>
-    <Image style={styles.img} source={imagem}/>
+    {renderImage()}
     <View style={styles.text}>
        <Text style={styles.textStatus}>Atual: {item.atual}{item.tipo}</Text>
        <Text style={styles.textStatus}>Ideal: {item.ideal}{item.tipo}</Text>

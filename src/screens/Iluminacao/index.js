@@ -191,8 +191,7 @@ const pickerStyle = {
 		paddingBottom: 12,
 	},
 	inputAndroid: {
-    color: 'black',    
-    
+    color: 'black',
 	},
 	placeholderColor: 'black',
 	underline: { borderTopWidth: 0 },
