@@ -1,12 +1,14 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import { Surface, Text, Button, useTheme } from 'react-native-paper';
 import Slider from '@react-native-community/slider';
+import { EgrowBLEContext} from '../../context/EgrowBLEContext'
 // import { Container } from './styles';
 
 
 const Marcador = (props) => {
+  const { setSolo } = useContext(EgrowBLEContext);
 const styles = StyleSheet.create({
         paper: {
           flex:1,
@@ -43,53 +45,55 @@ const styles = StyleSheet.create({
     });
 
 const {colors} = useTheme();
-const [item, setItem] = useState(props.data)
-const iluminacao = require('../../../assets/lampadas.png')
+const item = props.data;
+const [ideal, setIdeal] = useState(props.ideal)
 const temperatura = require('../../../assets/temperatura.png')
 const humidade = require('../../../assets/humidade.png')
 const solo = require('../../../assets/solo.png')
-const porta = require('../../../assets/door.png')
-const wifi = require('../../../assets/wifi.png')
-
-
 
 const handlerSlideValue = (value) =>{
-    setItem({...item, ideal : value})
+  setIdeal(value)
+}
+
+const handlerAlterar = () =>{
+  switch (props.data.imagem){
+    case 'temperatura':
+      break;
+    case 'humidade':
+      break;
+    case 'solo':
+      setSolo(ideal);
+      break;
+  }
 }
 
 const renderImage = () =>{
-  console.log(item)
   switch (props.data.imagem) {
-    case 'iluminacao':
-        return <Image style={styles.img} source={iluminacao}/>
     case 'temperatura':
       return <Image style={styles.img} source={temperatura}/>  
     case 'humidade':
       return <Image style={styles.img} source={humidade}/>  
     case 'solo':
-      return <Image style={styles.img} source={solo}/>  
-    case 'porta':
-      return <Image style={styles.img} source={porta}/>  
-    case 'wifi':
-      return <Image style={styles.img} source={wifi}/>  
+      return <Image style={styles.img} source={solo}/>
   }
 }
+
 return (
   <Surface style={styles.paper}>
     {renderImage()}
     <View style={styles.text}>
-       <Text style={styles.textStatus}>Atual: {item.atual}{item.tipo}</Text>
-       <Text style={styles.textStatus}>Ideal: {item.ideal}{item.tipo}</Text>
+       <Text style={styles.textStatus}>Atual: {props.atual}{item.tipo}</Text>
+       <Text style={styles.textStatus}>Ideal: {ideal}{item.tipo}</Text>
      </View>
      <View style={styles.wrap}>
          <Slider
           style={styles.slider}
-          minimumValue={4}
-          maximumValue={32}
-          value={item.ideal}
+          minimumValue={item.min}
+          maximumValue={item.max}
+          value={ideal}
           thumbTintColor={colors.primary}
           maximumTrackTintColor="#000000"
-          step={1}
+          step={item.step}
           onValueChange={handlerSlideValue}
          />
      </View>
@@ -97,11 +101,12 @@ return (
        <Button
           style={styles.button}
           mode="contained"
+          onPress={()=>{handlerAlterar()}}
       > 
-      <Text style={{color:colors.white}}>Alterar</Text>
+      <Text style={{color:colors.white}}        
+      >Alterar</Text>
        </Button>
      </View>
-     
   </Surface>
   );
 }

@@ -1,19 +1,21 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {View, StyleSheet, Image, SafeAreaView, ScrollView } from 'react-native';
 import { Surface, Text, Button, useTheme, Modal, Portal, Provider } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
-
+import { EgrowBLEContext} from '../../context/EgrowBLEContext'
 // import { Container } from './styles';
 
 
 const Iluminacao = () => {
+const { getTimer, setTimer } = useContext(EgrowBLEContext);
 const {colors} = useTheme();
 const icon = require('../../../assets/lampadas.png');
-const [horaLigar,setHoraLigar] = useState()
-const [minuteLigar,setMinuteLigar] = useState()
-const [horaDesligar,setHoraDesligar] = useState()
-const [minuteDesligar,setMinuteDesligar] = useState('')
+const [horaLigar,setHoraLigar] = useState();
+const [minuteLigar,setMinuteLigar] = useState();
+const [horaDesligar,setHoraDesligar] = useState();
+const [minuteDesligar,setMinuteDesligar] = useState('');
+const [edit,setEdit] = useState(false);
 
 const [hora, setHora] = useState([{
   value: '00',
@@ -24,54 +26,75 @@ const [minute, setMinute] = useState([{
   label: '00'
 }]);
 
-  useEffect(()=>{
-    makeHora()
-    makeMinute()
-  },[])
+useEffect(()=>{
+  makeHora();
+  makeMinute();
+  loadingTimer();
+},[])
 
-  function makeHora(){
-    let  h = []
-    for (let index = 1; index < 25; index++) {
-      if(index<10){
-        index = '0'+index
-      }
-      let valor ={
-        value: String(index),
-        label: String(index)
-      }
-      h.push(valor)
-    }
-   
-    setHora(h)
-  }
-  function makeMinute(){
-    let  m = []
-    for (let index = 0; index < 60; index++) {
-      if(index<10){
-        index = '0'+index
-      }
-      let valor ={
-        value: String(index),
-        label: String(index)
-      }
-      m.push(valor)
-    }
-    setMinute(m)
-  }
 
-  function handlesHoraLigar(value){
-    setHoraLigar(value)
-  }
-  function handlesMinuteLigar(value){
-    setMinuteLigar(value)
+function makeHora(){
+  let  h = []
+  for (let index = 1; index < 25; index++) {
+    if(index<10){
+      index = '0'+index
+    }
+    let valor ={
+      value: String(index),
+      label: String(index)
+    }
+    h.push(valor)
   }
   
-  function handlesHoraDesligar(value){
-    setHoraDesligar(value)
+  setHora(h)
+}
+function makeMinute(){
+  let  m = []
+  for (let index = 0; index < 60; index++) {
+    if(index<10){
+      index = '0'+index
+    }
+    let valor ={
+      value: String(index),
+      label: String(index)
+    }
+    m.push(valor)
   }
-  function handlesMinuteDesligar(value){
-    setMinuteDesligar(value)
+  setMinute(m)
+}
+async function loadingTimer(){
+  const {ligar, desligar} = await getTimer();
+  let horaL = ligar.substring(0,2);
+  let minuteL = ligar.substring(2,4);
+  let horaD = desligar.substring(0,2);
+  let minuteD = desligar.substring(2,4);
+
+  setHoraLigar(horaL);
+  setHoraDesligar(horaD);
+  setMinuteLigar(minuteL);
+  setMinuteDesligar(minuteD);
+}
+function handlesHoraLigar(value){
+  setHoraLigar(value)
+}
+function handlesMinuteLigar(value){
+  setMinuteLigar(value)
+}
+
+function handlesHoraDesligar(value){
+  setHoraDesligar(value)
+}
+function handlesMinuteDesligar(value){
+  setMinuteDesligar(value)
+}
+function handleSave(){
+  setEdit(false);
+  const clock ={
+    ligar:`${horaLigar}${minuteLigar}`,
+    desligar:`${horaDesligar}${minuteDesligar}`,
   }
+  setTimer(clock);
+}
 const styles = StyleSheet.create({
     paper: {
       flex:1,
@@ -122,10 +145,11 @@ return (
     <View style={styles.text}>
       <ScrollView style={styles.container}>
        <Text style={styles.textStatus}>Ligar as: {horaLigar}: {minuteLigar}</Text>
-        <Text style={styles.textClock}>
+       {edit ? <View>
+       <Text style={styles.textClock}>
           Hora:
         </Text>
-        <RNPickerSelect
+        <RNPickerSelect        
           placeholder={{
               label: 'Selecione a hora de Ligar',
               value: null,
@@ -145,8 +169,9 @@ return (
           onValueChange={(value) => {handlesMinuteLigar(value)}}
           items={minute}
         />
-        
+      </View>: <></>}
        <Text style={styles.textStatus}>Desligar as: {horaDesligar}: {minuteDesligar}</Text>
+      {edit ? <View>
         <Text style={styles.textClock}>
           Hora:
         </Text>
@@ -170,15 +195,26 @@ return (
           onValueChange={(value) => {handlesMinuteDesligar(value)}}
           items={minute}
         />
+        </View>:<></>}
        </ScrollView>
      </View>
      <View style={styles.footer}>
+       {edit ?        
+       <Button
+       style={styles.button}
+       mode="contained"
+       onPress={()=>handleSave()}
+        >
+        <Text style={{color:colors.white}}>Salvar</Text>
+        </Button>
+       :
        <Button
           style={styles.button}
           mode="contained"
+          onPress={()=>setEdit(true)}
       >
       <Text style={{color:colors.white}}>Alterar</Text>
-       </Button>
+       </Button>}
      </View>
   </Surface>
   );

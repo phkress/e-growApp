@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import {StatusBar} from 'react-native'
 import Routes from './routes'
 import HeaderBar from './components/HeaderBar'
+import EgrowBLEProvider from './context/EgrowBLEContext'
 
 const theme = {
     ...DefaultTheme,
@@ -15,17 +16,21 @@ const theme = {
         primary: '#32C575',
         contrastText: '#fff',
         white: '#FFF',
-        listBg: '#FFF'
+        listBg: '#FFF',
+        listBorder: '#E5E5EA'
     }
 }
 const App = () => {
   return (
+    
       <PaperProvider theme={theme}>
-        <NavigationContainer>
-            <StatusBar barStyle="light-content"/>
-            <HeaderBar/>
-            <Routes/>
-        </NavigationContainer>
+          <NavigationContainer>
+          <EgrowBLEProvider>
+              <StatusBar barStyle="light-content"/>
+              <HeaderBar/>
+              <Routes/>
+          </EgrowBLEProvider>
+          </NavigationContainer>
       </PaperProvider>
   );
 };

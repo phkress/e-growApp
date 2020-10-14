@@ -1,14 +1,20 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import { Surface, Text, Button, useTheme } from 'react-native-paper';
+import { color } from 'react-native-reanimated';
+import { EgrowBLEContext } from '../../context/EgrowBLEContext'
 
 // import { Container } from './styles';
 
 
-const Humidade = () => {
+const Porta = () => {
 const {colors} = useTheme();
-const icon = require('../../../assets/lampadas.png');
+const icon = require('../../../assets/door.png');
+const {} = useContext(EgrowBLEContext);
+useEffect(()=>{
+},[])
+
 const styles = StyleSheet.create({
     paper: {
       flex:1,
@@ -16,9 +22,7 @@ const styles = StyleSheet.create({
       elevation: 4,
     },
     button:{
-        width: 100,
-        margin:24,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     text:{
       flex:1,
@@ -26,54 +30,29 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'flex-start',
     },
-    textStatus:{
-      marginTop:32,
-      fontSize: 24
-    },
     img:{
       width: 80,
       height:80,
       marginTop:36,
       alignSelf:'center',
     },
-    footer: {
-      flexDirection: 'row',
-      alignSelf:'center',
-    }
 });
   return (
   <Surface style={styles.paper}>
     <Image style={styles.img} source={icon}/>
+    
     <View style={styles.text}>
-       <Text style={styles.textStatus}>Ideal:</Text>
-     </View>
-     <View style={styles.footer}>
-     <Button
-          style={styles.button}
-          mode="contained"
+      <Button 
+        style={styles.button}
+        mode="contained"
+        onPress={()=>console.log('apertou!')}
       >
-      <Text style={{color:colors.white}}>Alterar</Text>
-       </Button>
-       <Button
-          style={styles.button}
-          mode="contained"
-      >
-      <Text style={{color:colors.white}}>Alterar</Text>
-       </Button>
-       <Button
-          style={styles.button}
-          mode="contained"
-      >
-      <Text style={{color:colors.white}}>Alterar</Text>
-       </Button>
-       <Button
-          style={styles.button}
-          mode="contained"
-      >
-      <Text style={{color:colors.white}}>Alterar</Text>
-       </Button>
-     </View>
+        <Text
+          style={{color:'white'}}
+        >Trancar !</Text>
+      </Button>
+    </View>
   </Surface>
   );
 }
-export default Humidade;
+export default Porta;
